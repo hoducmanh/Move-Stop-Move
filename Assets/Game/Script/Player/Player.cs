@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    public GameObject tempPlayer;
     private float inputX;
     private float inputZ;
     public Joystick joystick;
     private Vector3 v_movement;
-    public float speed;
-    public Transform PlayerTrans;
-    public Animator _animator;
-    private Transform meshPlayer;
+    private bool isAttackable =true;
+    private bool isAttacking;
+    private float timer = 0;
+
     void Start()
     {
         meshPlayer = tempPlayer.GetComponent<Transform>();
@@ -22,6 +21,8 @@ public class Player : MonoBehaviour
     void FixedUpdate()
     {
         HandleWithInput();
+        ScanningEnemy();
+        Counter();
     }
 
     private void Move()
@@ -37,11 +38,16 @@ public class Player : MonoBehaviour
         v_movement = new Vector3(inputX * speed, 0, inputZ * speed);
         if (v_movement.sqrMagnitude <= 0.01f)
         {
-            _animator.SetTrigger(Value.CURRENT_ANIM_IDLE);
+            isAttackable = true;
+            if (!isAttacking) {
+                timer = 0;
+                changeAnimation(Value.CURRENT_ANIM_IDLE);
+            }
         }
         else
         {
-            _animator.SetTrigger(Value.CURRENT_ANIM_RUN);
+            isAttackable = false;
+            changeAnimation(Value.CURRENT_ANIM_RUN);
             Move();
         }
     }
@@ -49,5 +55,35 @@ public class Player : MonoBehaviour
     {
         inputX = joystick.Horizontal;
         inputZ = joystick.Vertical;
+    }
+    private void Attack()
+    {
+        //Debug.LogWarning(isAttackable);
+        if (isAttackable)
+        {
+            changeAnimation(Value.CURRENT_ANIM_ATTACK);
+            if (timer > 3f)
+            {
+                isAttacking = false;
+                isAttackable = false;
+            }
+            Debug.Log(isAttacking + " " + isAttackable);
+        }
+    }
+    private void ScanningEnemy()
+    {
+        if (targetPosition.Count > 0)
+        {
+            //if (isAttacking == false)
+            //{
+                isAttacking = true;
+                Attack();
+                //Debug.Log(isAttacking);
+            //}
+        }
+    }
+    private void Counter()
+    {
+        timer += Time.deltaTime;
     }
 }
