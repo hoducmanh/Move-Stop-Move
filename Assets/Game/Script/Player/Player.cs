@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : Character
 {
+    public GameObject Target;
+    public ChangeMaterial ChangeMat;
     private float inputX;
     private float inputZ;
     public Joystick joystick;
@@ -12,16 +14,11 @@ public class Player : Character
     private bool isAttacking;
     private float timer = 0;
 
-    void Start()
-    {
-        meshPlayer = tempPlayer.GetComponent<Transform>();
-        _animator = meshPlayer.GetComponent<Animator>();
-    }
-
     void FixedUpdate()
     {
         HandleWithInput();
         ScanningEnemy();
+        TargetingEnemy();
         Counter();
     }
 
@@ -36,18 +33,19 @@ public class Player : Character
     {
         joystickInput();
         v_movement = new Vector3(inputX * speed, 0, inputZ * speed);
-        if (v_movement.sqrMagnitude <= 0.01f)
+        if (v_movement.sqrMagnitude <= 0.1f)
         {
             isAttackable = true;
             if (!isAttacking) {
                 timer = 0;
-                changeAnimation(Value.CURRENT_ANIM_IDLE);
+                ChangeAnimation(Value.CURRENT_ANIM_IDLE);
             }
         }
         else
         {
             isAttackable = false;
-            changeAnimation(Value.CURRENT_ANIM_RUN);
+            isAttacking = false;
+            ChangeAnimation(Value.CURRENT_ANIM_RUN);
             Move();
         }
     }
@@ -58,32 +56,57 @@ public class Player : Character
     }
     private void Attack()
     {
-        //Debug.LogWarning(isAttackable);
         if (isAttackable)
         {
-            changeAnimation(Value.CURRENT_ANIM_ATTACK);
-            if (timer > 3f)
+            ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
+            if (timer > 2f)
             {
                 isAttacking = false;
                 isAttackable = false;
+                Debug.Log(isAttackable + " " + isAttacking);
             }
-            Debug.Log(isAttacking + " " + isAttackable);
         }
     }
     private void ScanningEnemy()
     {
         if (targetPosition.Count > 0)
         {
-            //if (isAttacking == false)
-            //{
-                isAttacking = true;
-                Attack();
-                //Debug.Log(isAttacking);
-            //}
+            isAttacking = true;
+            Attack();
         }
+        
     }
     private void Counter()
     {
         timer += Time.deltaTime;
+    }
+    private void TargetingEnemy()
+    {
+        if (targetPosition.Count > 0)
+        {
+            Target.SetActive(true);
+            Target.transform.position = targetPosition[0].transform.position;
+            Target.transform.SetParent(targetPosition[0].transform);
+        }
+        else
+        {
+            Target.SetActive(false);
+        }
+    }
+    protected override void OnTriggerEnter(Collider other)
+    {
+        base.OnTriggerEnter(other);
+        if (other.CompareTag(Value.OBSTACLE))
+        {
+            ChangeMat.MakeTransparent();
+        }
+    }
+    protected override void OnTriggerExit(Collider other)
+    {
+        base.OnTriggerExit(other);
+        if (other.CompareTag(Value.OBSTACLE))
+        {
+            ChangeMat.GiveColor();
+        }
     }
 }

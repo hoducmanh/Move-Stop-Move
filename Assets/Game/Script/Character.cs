@@ -9,31 +9,40 @@ public class Character : MonoBehaviour
     public Animator _animator;
     public LayerMask playerMask;
     public Transform PlayerTrans;
+    public bool isDead;
     public float speed;
     protected string currAnim = Value.CURRENT_ANIM_IDLE;
-    protected List<Vector3> targetPosition = new List<Vector3>();
-    private void OnTriggerEnter(Collider other)
+    protected List<Transform> targetPosition = new List<Transform>();
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag(Value.PLAYER))
         {
-            targetPosition.Add(other.transform.position);
+            targetPosition.Add(other.transform);
             //Debug.Log(targetPosition.Count);
         }
     }
-    private void OnTriggerExit(Collider other)
+    protected virtual void OnTriggerExit(Collider other)
     {
         if (other.CompareTag(Value.PLAYER))
         {
-            targetPosition.Remove(other.transform.position);
+            targetPosition.Remove(other.transform);
         }
     }
-    public void changeAnimation(string tempAnim)
+    public void ChangeAnimation(string tempAnim)
     {
         if (currAnim != tempAnim)
         {
             _animator.SetTrigger(tempAnim);
             currAnim = tempAnim;
-            Debug.Log(currAnim);
+            //Debug.Log(currAnim);
         }
     }
+    public void Dead()
+    {
+        if (isDead)
+        {
+            ChangeAnimation(Value.CURRENT_ANIM_DEAD);
+        }
+    }
+
 }
