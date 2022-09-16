@@ -7,8 +7,10 @@ public class Character : MonoBehaviour
     public GameObject tempPlayer;
     public Transform meshPlayer;
     public Animator _animator;
-    public LayerMask playerMask;
     public Transform PlayerTrans;
+    public Transform WeaponHolder;
+
+    //public Weapon ;
     public bool isDead;
     public float speed;
     protected string currAnim = Value.CURRENT_ANIM_IDLE;
@@ -44,5 +46,9 @@ public class Character : MonoBehaviour
             ChangeAnimation(Value.CURRENT_ANIM_DEAD);
         }
     }
-
+    public void Throwing(Vector3 target)
+    {
+        Weapon weaponToThrow = ItemPooling.Instance.SpawnFromPool(WeaponType.axe, WeaponHolder.position, Quaternion.identity).GetComponent<Weapon>();
+        weaponToThrow.SetupWeapon(target);
+    }
 }

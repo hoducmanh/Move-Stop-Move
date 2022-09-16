@@ -6,10 +6,7 @@ public class Enemy : Character
 {
     public AIAgent agent;
     public NavMeshAgent navAgent;
-    public Transform targetTrans;
     public Collider Col;
-    //private bool canMove;
-    public Animator animator;
 
     //private void GameManagerOnGameStateChanged(GameManager.GameState state)
     //{

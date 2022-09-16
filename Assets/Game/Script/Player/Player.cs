@@ -13,9 +13,11 @@ public class Player : Character
     private bool isAttackable =true;
     private bool isAttacking;
     private float timer = 0;
+    private bool isTheFirstTimeAttack = true;
 
     void FixedUpdate()
     {
+        //Debug.Log(timer);
         HandleWithInput();
         ScanningEnemy();
         TargetingEnemy();
@@ -45,6 +47,7 @@ public class Player : Character
         {
             isAttackable = false;
             isAttacking = false;
+            isTheFirstTimeAttack = true;
             ChangeAnimation(Value.CURRENT_ANIM_RUN);
             Move();
         }
@@ -56,14 +59,29 @@ public class Player : Character
     }
     private void Attack()
     {
+        Vector3 currTarget = Vector3.zero;
         if (isAttackable)
         {
-            ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
-            if (timer > 2f)
+            if (targetPosition.Count > 0)
             {
-                isAttacking = false;
-                isAttackable = false;
-                Debug.Log(isAttackable + " " + isAttacking);
+                ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
+                currTarget = targetPosition[0].position - meshPlayer.localPosition;
+                //currTarget.y = 0f;
+                Quaternion quer = Quaternion.LookRotation(currTarget);
+                meshPlayer.rotation = quer;
+                if (isTheFirstTimeAttack)
+                {
+                    Throwing(currTarget);
+                    isTheFirstTimeAttack = false;
+                }
+                else
+                    if (timer > 3f)
+                    {
+                        isAttacking = false;
+                        isAttackable = false;
+                        Throwing(currTarget);
+                    }
+                
             }
         }
     }
@@ -71,6 +89,7 @@ public class Player : Character
     {
         if (targetPosition.Count > 0)
         {
+            isAttacking = true;
             isAttacking = true;
             Attack();
         }

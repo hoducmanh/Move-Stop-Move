@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum WeaponType { axe, dagger, arrow }
 public class ItemPooling : Singleton<ItemPooling>
 {
     [System.Serializable]
     public class Pool
     {
-        public string tag;
+        public WeaponType tag;
         public GameObject prefab;
         public int size;
-        public Pool(string tag, GameObject prefab, int size)
+        public Pool(WeaponType tag, GameObject prefab, int size)
         {
             this.tag = tag;
             this.prefab = prefab;
@@ -19,10 +20,10 @@ public class ItemPooling : Singleton<ItemPooling>
     }
     [NonReorderable]
     public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
+    public Dictionary<WeaponType, Queue<GameObject>> poolDictionary;
     void Awake()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        poolDictionary = new Dictionary<WeaponType, Queue<GameObject>>();
         foreach (Pool pool in pools)
         {
             Queue<GameObject> objectPool = new Queue<GameObject>();
@@ -35,7 +36,7 @@ public class ItemPooling : Singleton<ItemPooling>
             poolDictionary.Add(pool.tag, objectPool);
         }
     }
-    public GameObject SpawnFromPool(string tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnFromPool(WeaponType tag, Vector3 position, Quaternion rotation)
     {
         if (poolDictionary[tag].Count <= 0)
         {
@@ -55,9 +56,10 @@ public class ItemPooling : Singleton<ItemPooling>
         return objectToSpawn;
     }
 
-    public void DespawnToPool(string tag, GameObject prefab)
+    public void DespawnToPool(WeaponType tag, GameObject prefab)
     {
         prefab.SetActive(false);
         poolDictionary[tag].Enqueue(prefab);
     }
+    
 }
