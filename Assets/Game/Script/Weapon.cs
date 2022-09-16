@@ -10,9 +10,15 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float weaponExistTime;
     public Transform weaponTrans;
     public GameObject weaponPrefab;
+    public Vector3 RotOffset;
+    private Quaternion rotOffset;
     private Vector3 rotateDir = Vector3.up;
     private Vector3 targetPos;
     private float timer;
+    private void Awake()
+    {
+        rotOffset = Quaternion.Euler(RotOffset.x, RotOffset.y, RotOffset.z);    
+    }
     void Update()
     {
         Flying();
@@ -39,8 +45,8 @@ public class Weapon : MonoBehaviour
             ItemPooling.Instance.DespawnToPool(WeaponType.axe, weaponPrefab);
         }
     }
-    private void ResetTimer()
+    public void SetRotation()
     {
-        
+        weaponTrans.rotation = rotOffset;
     }
 }

@@ -9,6 +9,7 @@ public class Character : MonoBehaviour
     public Animator _animator;
     public Transform PlayerTrans;
     public Transform WeaponHolder;
+    
 
     //public Weapon ;
     public bool isDead;
@@ -49,6 +50,7 @@ public class Character : MonoBehaviour
     public void Throwing(Vector3 target)
     {
         Weapon weaponToThrow = ItemPooling.Instance.SpawnFromPool(WeaponType.axe, WeaponHolder.position, Quaternion.identity).GetComponent<Weapon>();
+        weaponToThrow.SetRotation(); 
         weaponToThrow.SetupWeapon(target);
     }
 }

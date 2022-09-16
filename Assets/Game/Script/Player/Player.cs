@@ -10,7 +10,7 @@ public class Player : Character
     private float inputZ;
     public Joystick joystick;
     private Vector3 v_movement;
-    private bool isAttackable =true;
+    private bool isAttackable = true;
     private bool isAttacking;
     private float timer = 0;
     private bool isTheFirstTimeAttack = true;
@@ -22,6 +22,7 @@ public class Player : Character
         ScanningEnemy();
         TargetingEnemy();
         Counter();
+        //Debug.Log(timer);
     }
 
     private void Move()
@@ -39,7 +40,6 @@ public class Player : Character
         {
             isAttackable = true;
             if (!isAttacking) {
-                timer = 0;
                 ChangeAnimation(Value.CURRENT_ANIM_IDLE);
             }
         }
@@ -47,7 +47,6 @@ public class Player : Character
         {
             isAttackable = false;
             isAttacking = false;
-            isTheFirstTimeAttack = true;
             ChangeAnimation(Value.CURRENT_ANIM_RUN);
             Move();
         }
@@ -64,24 +63,32 @@ public class Player : Character
         {
             if (targetPosition.Count > 0)
             {
-                ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
-                currTarget = targetPosition[0].position - meshPlayer.localPosition;
-                //currTarget.y = 0f;
-                Quaternion quer = Quaternion.LookRotation(currTarget);
-                meshPlayer.rotation = quer;
                 if (isTheFirstTimeAttack)
                 {
+                    isAttacking = true;
+                    Quaternion quer = Quaternion.LookRotation(currTarget);
+                    ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
+                    meshPlayer.rotation = quer;
+                    currTarget = targetPosition[0].position - meshPlayer.localPosition;
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
+                    timer = 0;
+                    Debug.Log("if 1");
                 }
-                else
-                    if (timer > 3f)
-                    {
-                        isAttacking = false;
-                        isAttackable = false;
-                        Throwing(currTarget);
-                    }
-                
+                else if (timer > 3f)
+                {
+                    //isAttackable = false;
+                    //Throwing(currTarget);
+                    isTheFirstTimeAttack = true;
+                    Debug.Log("if 3");
+                    //isAttacking =false;
+                }
+                else if (timer > 0.5f)
+                {
+                    isAttacking = false;
+                    Debug.Log("if 2");
+                }
+
             }
         }
     }
@@ -89,7 +96,6 @@ public class Player : Character
     {
         if (targetPosition.Count > 0)
         {
-            isAttacking = true;
             isAttacking = true;
             Attack();
         }
