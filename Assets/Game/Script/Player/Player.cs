@@ -67,24 +67,18 @@ public class Player : Character
                     Quaternion quer = Quaternion.LookRotation(currTarget);
                     ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
                     meshPlayer.rotation = quer;
-                    currTarget = targetPosition[0].position - meshPlayer.localPosition;
+                    currTarget = targetPosition[0].PlayerTrans.position - meshPlayer.localPosition;
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
                     timer = 0;
-                    //Debug.Log("if 1");
                 }
                 else if (timer > 3f)
                 {
-                    //isAttackable = false;
-                    //Throwing(currTarget);
                     isTheFirstTimeAttack = true;
-                    //Debug.Log("if 3");
-                    //isAttacking =false;
                 }
                 else if (timer > 0.5f)
                 {
                     isAttacking = false;
-                    //ebug.Log("if 2");
                 }
 
             }
@@ -94,8 +88,13 @@ public class Player : Character
     {
         if (targetPosition.Count > 0)
         {
-            isAttacking = true;
-            Attack();
+            if (targetPosition[0].isDead == false)
+            {
+                isAttacking = true;
+                Attack();
+            }
+            else
+                targetPosition.RemoveAt(0);
         }
         
     }
@@ -107,15 +106,23 @@ public class Player : Character
     {
         if (targetPosition.Count > 0)
         {
-            Target.SetActive(true);
-            Target.transform.position = targetPosition[0].transform.position;
-            Target.transform.SetParent(targetPosition[0].transform);
+            if (targetPosition[0].isDead == false)
+            {
+                Target.SetActive(true);
+                Target.transform.position = targetPosition[0].transform.position;
+                Target.transform.SetParent(targetPosition[0].transform);
+            }
+            else
+            {
+                targetPosition.RemoveAt(0);
+            }
         }
         else
         {
             Target.SetActive(false);
         }
     }
+    
     protected override void OnTriggerEnter(Collider other)
     {
         base.OnTriggerEnter(other);

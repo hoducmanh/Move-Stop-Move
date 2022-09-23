@@ -22,7 +22,8 @@ public class AIStateIdle : AIState
             {
                 agent.StateMachine.ChangeState(AIStateId.attack);
             }
-            else {
+            else
+            {
                 idleTime += Time.deltaTime;
             }
         }

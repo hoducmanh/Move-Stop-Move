@@ -8,23 +8,25 @@ public class Character : MonoBehaviour
     public Transform meshPlayer;
     public Animator _animator;
     public Transform PlayerTrans;
-    public Transform WeaponHolder;
+    public GameObject WeaponHolder;
     public bool isDead;
     public float speed;
     protected string currAnim = Value.CURRENT_ANIM_IDLE;
-    protected List<Transform> targetPosition = new List<Transform>();
+    protected List<Character> targetPosition = new List<Character>();
     protected virtual void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag(Value.PLAYER))
+        Debug.Log("add");
+        if (other.CompareTag(Value.PLAYER))
         {
-            targetPosition.Add(other.transform);
+            
+            targetPosition.Add(other.GetComponent<Character>());
         }
     }
     protected virtual void OnTriggerExit(Collider other)
     {
         if (other.CompareTag(Value.PLAYER))
         {
-            targetPosition.Remove(other.transform);
+            targetPosition.Remove(other.GetComponent<Character>());
         }
     }
     public void ChangeAnimation(string tempAnim)
@@ -44,7 +46,9 @@ public class Character : MonoBehaviour
     }
     public void Throwing(Vector3 target)
     {
-        Weapon weaponToThrow = ItemPooling.Instance.SpawnFromPool(WeaponType.axe, WeaponHolder.position, Quaternion.identity).GetComponent<Weapon>();
+        
+        Weapon weaponToThrow = ItemPooling.Instance.SpawnFromPool(WeaponType.axe, WeaponHolder.transform.position, Quaternion.identity).GetComponent<Weapon>();
+        Debug.Log(weaponToThrow);
         weaponToThrow.SetRotation(); 
         weaponToThrow.SetupWeapon(target);
     }
