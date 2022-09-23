@@ -42,7 +42,8 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            ItemPooling.Instance.DespawnToPool(WeaponType.axe, weaponPrefab);
+            ItemPooling.Instance.DespawnToPool(WeaponType.axe, gameObject);
+            timer = 0;
         }
     }
     public void SetRotation()

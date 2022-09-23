@@ -9,9 +9,6 @@ public class Character : MonoBehaviour
     public Animator _animator;
     public Transform PlayerTrans;
     public Transform WeaponHolder;
-    
-
-    //public Weapon ;
     public bool isDead;
     public float speed;
     protected string currAnim = Value.CURRENT_ANIM_IDLE;
@@ -21,7 +18,6 @@ public class Character : MonoBehaviour
         if(other.CompareTag(Value.PLAYER))
         {
             targetPosition.Add(other.transform);
-            //Debug.Log(targetPosition.Count);
         }
     }
     protected virtual void OnTriggerExit(Collider other)
@@ -37,7 +33,6 @@ public class Character : MonoBehaviour
         {
             _animator.SetTrigger(tempAnim);
             currAnim = tempAnim;
-            //Debug.Log(currAnim);
         }
     }
     public void Dead()

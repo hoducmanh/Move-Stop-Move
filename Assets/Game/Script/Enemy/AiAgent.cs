@@ -10,8 +10,6 @@ public class AIAgent : MonoBehaviour
     public AIStateId InitialState;
     public Animator Anim;
     public NavMeshAgent NavAgent;
-    public Transform BotTrans;
-    public Collider BotCollider;
     public Enemy enemyRef;
     public AIStateId currState;
     void Start()

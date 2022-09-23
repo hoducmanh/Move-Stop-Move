@@ -17,12 +17,10 @@ public class Player : Character
 
     void FixedUpdate()
     {
-        //Debug.Log(timer);
         HandleWithInput();
         ScanningEnemy();
         TargetingEnemy();
         Counter();
-        //Debug.Log(timer);
     }
 
     private void Move()
@@ -73,20 +71,20 @@ public class Player : Character
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
                     timer = 0;
-                    Debug.Log("if 1");
+                    //Debug.Log("if 1");
                 }
                 else if (timer > 3f)
                 {
                     //isAttackable = false;
                     //Throwing(currTarget);
                     isTheFirstTimeAttack = true;
-                    Debug.Log("if 3");
+                    //Debug.Log("if 3");
                     //isAttacking =false;
                 }
                 else if (timer > 0.5f)
                 {
                     isAttacking = false;
-                    Debug.Log("if 2");
+                    //ebug.Log("if 2");
                 }
 
             }

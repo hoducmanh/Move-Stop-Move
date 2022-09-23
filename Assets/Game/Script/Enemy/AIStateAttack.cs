@@ -10,7 +10,7 @@ public class AIStateAttack : AIState
     }
     public void Enter(AIAgent agent)
     {
-
+        //Debug.Log("attack");
     }
     public void Update(AIAgent agent)
     {
