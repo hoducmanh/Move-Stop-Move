@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour
     public Transform weaponTrans;
     public GameObject weaponPrefab;
     public Vector3 RotOffset;
+    public Collider col;
     private Quaternion rotOffset;
     private Vector3 rotateDir = Vector3.up;
     private Vector3 targetPos;
@@ -42,12 +43,17 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            ItemPooling.Instance.DespawnToPool(WeaponType.axe, gameObject);
+            ItemPooling.Instance.DespawnWeaponToPool(WeaponType.axe, gameObject);
             timer = 0;
         }
     }
     public void SetRotation()
     {
         weaponTrans.rotation = rotOffset;
+    }
+    public void OnDespawnToPool()
+    {
+        this.enabled = true;
+        col.enabled = true;
     }
 }

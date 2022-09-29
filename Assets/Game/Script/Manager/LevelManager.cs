@@ -34,7 +34,10 @@ public class LevelManager : Singleton<LevelManager>
     {
         for(int i = 0; i < 20; i++)
         {
-            Vector3 pos = new Vector3(Random.Range(-30f, 30f), 0, Random.Range(-30f, 30f));
+            float x, z;
+            x = Random.Range(-30f, 30f);
+            z = Random.Range(-30f, 30f);
+            Vector3 pos = new Vector3(x, 0, z);
             float dis = (playerTrans.localPosition - pos).sqrMagnitude;
             if (dis < spawnRadius)
             {
@@ -45,6 +48,9 @@ public class LevelManager : Singleton<LevelManager>
                 return pos;
             }
         }
-        return new Vector3(spawn[Random.Range(0, 3)], 0, spawn[Random.Range(0, 3)]);
+        int posX, posZ;
+        posX = Random.Range(0, 3);
+        posZ = Random.Range(0, 3);
+        return new Vector3(spawn[posX], 0, spawn[posZ]);
     }
 }

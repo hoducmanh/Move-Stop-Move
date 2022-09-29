@@ -64,10 +64,9 @@ public class Player : Character
                 if (isTheFirstTimeAttack)
                 {
                     isAttacking = true;
-                    Quaternion quer = Quaternion.LookRotation(currTarget);
                     ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
-                    meshPlayer.rotation = quer;
-                    currTarget = targetPosition[0].PlayerTrans.position - meshPlayer.localPosition;
+                    currTarget = (targetPosition[0].PlayerTrans.position - meshPlayer.localPosition).normalized;
+                    meshPlayer.LookAt(currTarget);
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
                     timer = 0;

@@ -1043,7 +1043,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &408295161
 Transform:
   m_ObjectHideFlags: 0
@@ -1102,18 +1102,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c209557d4da2aef488c72b89305bbc26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  navAgent: {fileID: 408295166}
+  player: {fileID: 0}
   tempPlayer: {fileID: 408295160}
   meshPlayer: {fileID: 408295161}
   _animator: {fileID: 224828572}
   PlayerTrans: {fileID: 408295161}
+  ThrowPos: {fileID: 0}
   WeaponHolder: {fileID: 222124775}
+  weaponTag: 0
+  weaponSkinTag: 0
   isDead: 0
   speed: 5
   weapons: []
   agent: {fileID: 408295167}
-  navAgent: {fileID: 408295166}
   trans: {fileID: 408295161}
   Col: {fileID: 408295163}
+  sphereCol: {fileID: 0}
   isAttackable: 0
 --- !u!195 &408295166
 NavMeshAgent:
@@ -2339,10 +2344,43 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd45c0368fbd684da9ec9faf7d80aa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pools:
+  WeaponTypeDatas:
   - tag: 0
     prefab: {fileID: 1345774447395992205, guid: b1a036d45d0117f4284160c1cf250e76, type: 3}
     size: 10
+  - tag: 0
+    prefab: {fileID: 2760043302722981076, guid: b0e29083970d6fa458195ac6f5c7dc9f, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 8302788939193783610, guid: ba6698fb78e366440a9931e3f8b3fe31, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 726627626159976083, guid: 586534774d877bc498448ca07bc3b999, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 4133494780840812631, guid: 80f94542792e208439f4f457695611e3, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 5380822297265210189, guid: 176025fbbdaf1374098254a648d2d374, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 6341544607648465368, guid: 69e7e802888bbb64986c66cee5bf7ecc, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 5332205125979533365, guid: d49908e913a9181499d5df546d664ca0, type: 3}
+    size: 10
+  - tag: 0
+    prefab: {fileID: 5332205125979533365, guid: d49908e913a9181499d5df546d664ca0, type: 3}
+    size: 10
+  - tag: 1
+    prefab: {fileID: 5200831570672323945, guid: 7bb0ce927f285ab41a7ba91db7a98b4f, type: 3}
+    size: 10
+  - tag: 1
+    prefab: {fileID: 3651097271518934512, guid: eb0c50dd5a811164cbd2621322195fd0, type: 3}
+    size: 10
+  HatDatas: []
+  BotMaterials: []
+  BotNames: []
 --- !u!4 &754659225
 Transform:
   m_ObjectHideFlags: 0
@@ -3979,7 +4017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pools:
   - tag: 0
-    prefab: {fileID: 1815145728274997000, guid: 6e53ad726a856804db23d013ca33e7ea, type: 3}
+    prefab: {fileID: 1699651918539318561, guid: 4da065f432617be4ea0dde532eb6a562, type: 3}
     size: 1
 --- !u!1 &1208681113
 GameObject:
@@ -4675,7 +4713,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1558781213
 Transform:
   m_ObjectHideFlags: 0
@@ -4704,11 +4742,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a63e4c9d2fe8fe40ba68566ba8822ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  navAgent: {fileID: 1558781217}
+  player: {fileID: 1558781214}
   tempPlayer: {fileID: 3341089548889212862}
   meshPlayer: {fileID: 1731272209015059885}
   _animator: {fileID: 8542401774165530839}
   PlayerTrans: {fileID: 1558781213}
+  ThrowPos: {fileID: 57821303}
   WeaponHolder: {fileID: 57821303}
+  weaponTag: 0
+  weaponSkinTag: 0
   isDead: 0
   speed: 5
   Target: {fileID: 678216911}

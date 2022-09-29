@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -1779814512799530824}
   - component: {fileID: -4946840656422759780}
   m_Layer: 9
-  m_Name: Throwing_Axe
+  m_Name: Axe_0_1
   m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498e8c46c2552d141976f3583291a507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flyingSpeed: 5
-  rotatingSpeed: 5
-  weaponExistTime: 0.8
+  flyingSpeed: 10
+  rotatingSpeed: 10
+  weaponExistTime: 0.5
   weaponTrans: {fileID: 1345774447395761837}
   weaponPrefab: {fileID: 1345774447395992205}
   RotOffset: {x: -90, y: 0, z: 90}

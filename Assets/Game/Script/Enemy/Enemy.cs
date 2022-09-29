@@ -6,11 +6,10 @@ public class Enemy : Character
 {
     public List<Weapon> weapons;
     public AIAgent agent;
-    public NavMeshAgent navAgent;
     public Transform trans;
     public Collider Col;
+    public Collider sphereCol;
     public bool isAttackable = false;
-    Quaternion curRotation;
     public bool ScanningEnemy()
     {
         if (targetPosition.Count > 0)
@@ -28,29 +27,18 @@ public class Enemy : Character
         }
         else return false;
     }
-    protected override void OnTriggerEnter(Collider other)
+
+    public void EnemyAttack()
     {
-        base.OnTriggerEnter(other);
-        if (other.CompareTag(Value.WEAPON))
-        {
-            //Debug.Log("got hit");
-            ChangeAnimation(Value.CURRENT_ANIM_DEAD);
-            navAgent.enabled = false;
-            agent.enabled = false;
-            Col.enabled = false;
-            isDead = true;
-        }
-    }
-    public void Attack()
-    {
+        sphereCol.enabled = false;
         Vector3 currTarget = Vector3.zero;
-        currTarget = targetPosition[0].PlayerTrans.position - meshPlayer.localPosition;
+        currTarget = (targetPosition[0].PlayerTrans.position - meshPlayer.localPosition).normalized;
+        trans.LookAt(currTarget);
         Throwing(currTarget);
-        curRotation = Quaternion.LookRotation(currTarget);
-        trans.rotation = curRotation;
     }
     public void GetRandomWeapon()
     {
 
     }
+    
 }
