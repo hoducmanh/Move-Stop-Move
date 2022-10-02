@@ -13,11 +13,6 @@ public class LevelManager : Singleton<LevelManager>
     {
         SpawnBaseEnemy();
     }
-
-    void Update()
-    {
-        
-    }
     private void SpawnBaseEnemy()
     {
         for(int i = 0; i < numOfExistEnemy; i++)
@@ -53,4 +48,5 @@ public class LevelManager : Singleton<LevelManager>
         posZ = Random.Range(0, 3);
         return new Vector3(spawn[posX], 0, spawn[posZ]);
     }
+    
 }

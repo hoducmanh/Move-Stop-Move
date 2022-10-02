@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum WeaponType { axe, dagger, arrow }
+public enum WeaponType { axe, candy, dagger, hammer}
 public enum WeaponSkinType
 {
     Axe_0,
@@ -12,9 +12,7 @@ public enum WeaponSkinType
     Candy_0_1,
     Candy_0_2,
     Knife_1,
-    Knife_2,
-    Candy_1_1,
-    Candy_1_2
+    Knife_2
 }
 public enum HatType
 {
@@ -33,12 +31,13 @@ public enum HatType
 public class ItemPooling : Singleton<ItemPooling>
 {
     [System.Serializable]
-    public class WeaponData
+    public class WeaponTypeData
     {
-        public WeaponType tag;
-        public GameObject prefab;
-        public int size;
+        public WeaponType WeaponTag;
+        public Weapon WeaponPrefab;
+        public int PoolSize;
     }
+    [System.Serializable]
     public class WeaponSkinData
     {
         public WeaponSkinType WeaponSkinTag;
@@ -47,80 +46,102 @@ public class ItemPooling : Singleton<ItemPooling>
     [System.Serializable]
     public class HatData
     {
-        public HatType hatTag;
-        public GameObject hatPrefab;
-        public int size;
+        public HatType HatTag;
+        public GameObject HatPrefabs;
+        public int poolSize;
     }
-    [NonReorderable]
-    public List<WeaponData> WeaponTypeDatas;
-    [NonReorderable]
-    public List<WeaponSkinData> WeaponSkinDatas;
-    [NonReorderable]
-    public List<HatData> HatDatas;
+    private List<WeaponTypeData> weaponTypeDatas;
+    private List<WeaponSkinData> weaponSkinDatas;
+    private List<HatData> hatDatas;
+    private List<Material> botMaterials;
+    private List<string> botNames;
 
-    public List<Material> BotMaterials;
-    public List<string> BotNames;
+    public WeaponDataSO WeaponDataSO;
+    public HatDataSO HatDataSO;
+    public BotDataSO BotDataSO;
 
-    private Dictionary<WeaponType, GameObject> weaponItems = new Dictionary<WeaponType, GameObject>();
+    private Dictionary<WeaponType, Weapon> weaponItems = new Dictionary<WeaponType, Weapon>();
     private Dictionary<WeaponSkinType, Material> weaponSkins = new Dictionary<WeaponSkinType, Material>();
     private Dictionary<HatType, GameObject> hatItems = new Dictionary<HatType, GameObject>();
-    private Dictionary<WeaponType, Queue<GameObject>> weaponPool = new Dictionary<WeaponType, Queue<GameObject>>();
-    private Dictionary<HatType, Queue<GameObject>> hatPool = new Dictionary<HatType, Queue<GameObject>>();
+
+    private Dictionary<WeaponType, Stack<Weapon>> weaponPool = new Dictionary<WeaponType, Stack<Weapon>>();
+    private Dictionary<HatType, Stack<GameObject>> hatPool = new Dictionary<HatType, Stack<GameObject>>();
+
     void Awake()
     {
-        foreach (var item in WeaponTypeDatas)
+        InputScriptableObjectData();
+        foreach (var item in weaponTypeDatas)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i < item.size; i++)
-            {
-                GameObject obj = Instantiate(item.prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
-            weaponPool.Add(item.tag, objectPool);
+            weaponItems.Add(item.WeaponTag, item.WeaponPrefab);
         }
-        foreach (var item in HatDatas)
+        foreach (var item in weaponSkinDatas)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i < item.size; i++)
+            weaponSkins.Add(item.WeaponSkinTag, item.WeaponSkinMaterial);
+        }
+        foreach (var item in hatDatas)
+        {
+            hatItems.Add(item.HatTag, item.HatPrefabs);
+        }
+        foreach (var item in weaponTypeDatas)
+        {
+            Stack<Weapon> tmpStack = new Stack<Weapon>();
+            for (int i = 0; i < item.PoolSize; i++)
             {
-                GameObject obj = Instantiate(item.hatPrefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
+                Weapon tmpObj = Instantiate(item.WeaponPrefab);
+                tmpStack.Push(tmpObj);
+                tmpObj.weaponObj.SetActive(false);
             }
-            hatPool.Add(item.hatTag, objectPool);
+
+            weaponPool.Add(item.WeaponTag, tmpStack);
+        }
+        foreach (var item in hatDatas)
+        {
+            Stack<GameObject> tmpStack = new Stack<GameObject>();
+            for (int i = 0; i < item.poolSize; i++)
+            {
+                GameObject tmpObj = Instantiate(item.HatPrefabs);
+                tmpStack.Push(tmpObj);
+
+                tmpObj.SetActive(false);
+            }
+
+            hatPool.Add(item.HatTag, tmpStack);
         }
     }
-    public GameObject SpawnWeaponFromPool(WeaponType tag, WeaponSkinType skinTag, Vector3 position, Quaternion rotation)
-    {        
+    public T SpawnWeaponFromPool<T>(WeaponType tag, WeaponSkinType skinTag, Vector3 position, Quaternion rotation) where T : Weapon
+    {
+        Weapon weapon; 
         if (weaponPool[tag].Count <= 0)
         {
-            foreach (WeaponData item in WeaponTypeDatas)
-            {
-                if (item.tag == tag)
-                {
-                    GameObject obj = Instantiate(item.prefab);
-                    weaponPool[tag].Enqueue(obj);
-                }
-            }
+            weapon = Instantiate(weaponItems[tag]);
         }
-        GameObject objectToSpawn = weaponPool[tag].Dequeue();
-        //weapon = CacheWeapon.Get(objectToSpawn);
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
-
-        IPoolWeapon poolWeapon = CacheIPoolWeapon.Get(objectToSpawn);
+        else
+        {
+            weapon = weaponPool[tag].Pop();
+        }
+        GameObject obj = weapon.weaponObj;
+        obj.SetActive(true);
+        obj.transform.position = position;
+        obj.transform.rotation = rotation;
+        IPoolWeapon poolWeapon = CacheIPoolWeapon.Get(weapon);
         poolWeapon?.OnSpawnFromPool(weaponSkins[skinTag]);
-        return objectToSpawn;
+        return weapon as T;
     }
 
-    public void DespawnWeaponToPool(WeaponType tag, GameObject objectToDespawn)
+    public void DespawnWeaponToPool(Weapon objectToDespawn)
     {
-        objectToDespawn.SetActive(false);
+        weaponPool[objectToDespawn.weaponType].Push(objectToDespawn);
         IPoolWeapon poolWeapon = CacheIPoolWeapon.Get(objectToDespawn);
         poolWeapon?.OnDespawnToPool();
-        weaponPool[tag].Enqueue(objectToDespawn);
+        objectToDespawn.weaponObj.SetActive(false);
+    }
+    private void InputScriptableObjectData()
+    {
+        weaponTypeDatas = WeaponDataSO.WeaponDatas;
+        weaponSkinDatas = WeaponDataSO.WeaponSkinDatas;
+        hatDatas = HatDataSO.HatDatas;
+        botMaterials = BotDataSO.BotMaterials;
+        botNames = BotDataSO.BotNames;
     }
 }
 

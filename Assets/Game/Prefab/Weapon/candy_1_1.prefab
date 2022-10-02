@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4133494780840983671}
   - component: {fileID: 4133494780837592151}
   - component: {fileID: 4133494780838559383}
+  - component: {fileID: 5674622469876767039}
   m_Layer: 0
   m_Name: candy_1_1
   m_TagString: Untagged
@@ -82,3 +83,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5674622469876767039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4133494780840812631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498e8c46c2552d141976f3583291a507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flyingSpeed: 0
+  rotatingSpeed: 0
+  weaponExistTime: 0
+  weaponTrans: {fileID: 0}
+  weaponPrefab: {fileID: 0}
+  RotOffset: {x: 0, y: 0, z: 0}
+  col: {fileID: 0}

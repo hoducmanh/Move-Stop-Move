@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class Character : MonoBehaviour
 {
+    public WeaponType weaponTag { get; protected set; }
+    public WeaponSkinType weaponSkinTag { get; protected set; }
+    public HatType hatTag { get; protected set; }
     public NavMeshAgent navAgent;
     public Character player;
     public GameObject tempPlayer;
@@ -13,8 +16,6 @@ public class Character : MonoBehaviour
     public Transform PlayerTrans;
     public GameObject ThrowPos;
     public GameObject WeaponHolder;
-    public WeaponType weaponTag;
-    public WeaponSkinType weaponSkinTag;
     public bool isDead;
     public float speed;
     protected string currAnim = Value.CURRENT_ANIM_IDLE;
@@ -23,7 +24,6 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag(Value.PLAYER))
         {
-            Debug.Log(other + "enter");
             targetPosition.Add(other.GetComponent<Character>());
         }
         if (other.CompareTag(Value.WEAPON))
@@ -35,7 +35,6 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag(Value.PLAYER))
         {
-            Debug.Log(other + "exit");
             targetPosition.Remove(other.GetComponent<Character>());
         }
     }
@@ -56,7 +55,7 @@ public class Character : MonoBehaviour
     }
     public void Throwing(Vector3 target)
     {
-        Weapon weaponToThrow = ItemPooling.Instance.SpawnWeaponFromPool(WeaponType.axe, WeaponSkinType.Axe_0, ThrowPos.transform.position, Quaternion.identity).GetComponent<Weapon>();
+        Weapon weaponToThrow = ItemPooling.Instance.SpawnWeaponFromPool<Weapon>(weaponTag, weaponSkinTag, ThrowPos.transform.position, Quaternion.identity);
         weaponToThrow.SetRotation(); 
         weaponToThrow.SetupWeapon(target);
     }
@@ -64,7 +63,6 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag(Value.WEAPON))
         {
-            Debug.Log("hit");
             ChangeAnimation(Value.CURRENT_ANIM_DEAD);
             Dead();
             player.enabled = false;

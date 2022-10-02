@@ -57,15 +57,15 @@ public class Player : Character
     private void Attack()
     {
         Vector3 currTarget = Vector3.zero;
-        if (isAttackable)
+        if (targetPosition.Count > 0)
         {
-            if (targetPosition.Count > 0)
+            if (isAttackable)
             {
                 if (isTheFirstTimeAttack)
                 {
                     isAttacking = true;
                     ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
-                    currTarget = (targetPosition[0].PlayerTrans.position - meshPlayer.localPosition).normalized;
+                    currTarget = (targetPosition[0].PlayerTrans.position - meshPlayer.localPosition);
                     meshPlayer.LookAt(currTarget);
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
@@ -79,7 +79,6 @@ public class Player : Character
                 {
                     isAttacking = false;
                 }
-
             }
         }
     }

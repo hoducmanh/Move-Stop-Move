@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 8302788939194272026}
   - component: {fileID: 8302788939190880570}
   - component: {fileID: 8302788939191847930}
+  - component: {fileID: 6994407028766751763}
+  - component: {fileID: 5204192067286655645}
+  - component: {fileID: -6463036077293716298}
   m_Layer: 0
   m_Name: candy_0_1
   m_TagString: Untagged
@@ -83,3 +86,51 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &6994407028766751763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302788939193783610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498e8c46c2552d141976f3583291a507, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flyingSpeed: 10
+  rotatingSpeed: 10
+  weaponExistTime: 0.5
+  weaponTrans: {fileID: 8302788939194272026}
+  weaponPrefab: {fileID: 8302788939193783610}
+  RotOffset: {x: -90, y: 0, z: 90}
+  col: {fileID: 0}
+--- !u!65 &5204192067286655645
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302788939193783610}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.011666526, y: 0.026596578, z: 0.0116665205}
+  m_Center: {x: -0.000000001862645, y: -0.0023885716, z: 4.6566123e-10}
+--- !u!54 &-6463036077293716298
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8302788939193783610}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0

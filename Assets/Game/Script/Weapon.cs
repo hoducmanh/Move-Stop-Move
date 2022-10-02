@@ -9,7 +9,8 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float rotatingSpeed;
     [SerializeField] private float weaponExistTime;
     public Transform weaponTrans;
-    public GameObject weaponPrefab;
+    public GameObject weaponObj;
+    public WeaponType weaponType;
     public Vector3 RotOffset;
     public Collider col;
     private Quaternion rotOffset;
@@ -43,7 +44,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            ItemPooling.Instance.DespawnWeaponToPool(WeaponType.axe, gameObject);
+            ItemPooling.Instance.DespawnWeaponToPool(this);
             timer = 0;
         }
     }

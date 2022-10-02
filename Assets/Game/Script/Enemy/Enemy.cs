@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public class Enemy : Character
 {
-    public List<Weapon> weapons;
+    //public List<GameObject> weapons;
     public AIAgent agent;
     public Transform trans;
     public Collider Col;
@@ -38,7 +38,8 @@ public class Enemy : Character
     }
     public void GetRandomWeapon()
     {
-
+        //int ranNum = Random.Range(0, weapons.Count - 1);
+        //weapons[ranNum].SetParent(WeaponHolder.transform);
     }
     
 }
