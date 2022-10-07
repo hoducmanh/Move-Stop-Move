@@ -16,7 +16,6 @@ public enum WeaponSkinType
 }
 public enum HatType
 {
-    None,
     Arrow,
     Cowboy,
     Crown,
@@ -142,6 +141,20 @@ public class ItemPooling : Singleton<ItemPooling>
         hatDatas = HatDataSO.HatDatas;
         botMaterials = BotDataSO.BotMaterials;
         botNames = BotDataSO.BotNames;
+    }
+    public Material GetRandomMaterial()
+    {
+        int randomNum = Random.Range(0, botMaterials.Count);
+        return botMaterials[randomNum];
+    }
+    public string GetRandomName()
+    {
+        int randomNum = Random.Range(0, botNames.Count);
+        return botNames[randomNum];
+    }
+    public Material GetWeaponSkin(WeaponSkinType tag)
+    {
+        return weaponSkins[tag];
     }
 }
 

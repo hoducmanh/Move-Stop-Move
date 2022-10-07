@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+using static GameManager;
 
 public class LevelManager : Singleton<LevelManager>
 {
@@ -8,10 +10,19 @@ public class LevelManager : Singleton<LevelManager>
     [SerializeField] private int numOfTotalEnemy = 30; 
     public Transform playerTrans;
     public float spawnRadius;
-    private List<int> spawn =  new List<int>() { -20, -16, 16, 20};
-    void Start()
+    public float outRadius;
+    private List<float> spawn =  new List<float>() { -20f, -16f, 16f, 20f};
+    void Awake()
     {
         SpawnBaseEnemy();
+    }
+    private void Start()
+    {
+        GameManager.OnGameStateChange += GameManagerOnGameStateChange;
+    }
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChange -= GameManagerOnGameStateChange;
     }
     private void SpawnBaseEnemy()
     {
@@ -22,19 +33,20 @@ public class LevelManager : Singleton<LevelManager>
     }
     private void SpawnEnemyOnRandomPos()
     {
-        Vector3 enemyPos = GetRandomDir();
-        EnemyPooling.Instance.SpawnEnemyFromPool(EnemyType.Player, enemyPos, Quaternion.identity);
+        Vector3 enemyPos = GetRandomPos();
+        GetRandomPos();
+        EnemyPooling.Instance.SpawnEnemyFromPool(enemyPos, Quaternion.identity);
     }
-    private Vector3 GetRandomDir()
+    private Vector3 GetRandomPos()
     {
-        for(int i = 0; i < 20; i++)
+        for (int i = 0; i < 150; i++)
         {
             float x, z;
-            x = Random.Range(-30f, 30f);
-            z = Random.Range(-30f, 30f);
+            x = Random.Range(-16f, 16f);
+            z = Random.Range(-16f, 16f);
             Vector3 pos = new Vector3(x, 0, z);
-            float dis = (playerTrans.localPosition - pos).sqrMagnitude;
-            if (dis < spawnRadius)
+            float dis = (Vector3.zero - pos).sqrMagnitude;
+            if (dis < spawnRadius * spawnRadius)
             {
                 continue;
             }
@@ -48,5 +60,14 @@ public class LevelManager : Singleton<LevelManager>
         posZ = Random.Range(0, 3);
         return new Vector3(spawn[posX], 0, spawn[posZ]);
     }
-    
+    private void GameManagerOnGameStateChange(GameState state)
+    {
+        switch (state)
+        {
+            case GameState.LoadLevel: 
+                break;
+            default:
+                break;
+        }
+    }
 }

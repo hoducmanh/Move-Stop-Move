@@ -7,53 +7,53 @@ public class EnemyPooling : Singleton<EnemyPooling>
     [System.Serializable]
     public class Pool
     {
-        public EnemyType tag;
-        public GameObject prefab;
+        public GameObject enemyPrefab;
         public int size;
     }
     [NonReorderable]
-    public List<Pool> pools;
-    public Dictionary<EnemyType, Queue<GameObject>> poolDictionary;
-    void Awake()
+    public Pool pools;
+    public Stack<GameObject> enemyPool = new Stack<GameObject>();
+    protected void Awake()
     {
-        poolDictionary = new Dictionary<EnemyType, Queue<GameObject>>();
-        foreach (Pool pool in pools)
+        for (int i = 0; i < pools.size; i++)
         {
-            Queue<GameObject> objectPool = new Queue<GameObject>();
-            for (int i = 0; i < pool.size; i++)
-            {
-                GameObject obj = Instantiate(pool.prefab);
-                obj.SetActive(false);
-                objectPool.Enqueue(obj);
-            }
-            poolDictionary.Add(pool.tag, objectPool);
+            GameObject obj = Instantiate(pools.enemyPrefab);
+            obj.SetActive(false);
+            enemyPool.Push(obj);
         }
     }
-    public GameObject SpawnEnemyFromPool(EnemyType tag, Vector3 position, Quaternion rotation)
+    public GameObject SpawnEnemyFromPool(Vector3 position, Quaternion rotation)
     {
-
-        if (poolDictionary[tag].Count <= 0)
+        GameObject obj;
+        if (enemyPool.Count <= 0)
         {
-            foreach (Pool pool in pools)
-            {
-                if (pool.tag == tag)
-                {
-                    GameObject obj = Instantiate(pool.prefab);
-                    poolDictionary[tag].Enqueue(obj);
-                }
-            }
+            obj = Instantiate(pools.enemyPrefab);
         }
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
-        objectToSpawn.SetActive(true);
-        objectToSpawn.transform.position = position;
-        objectToSpawn.transform.rotation = rotation;
-        return objectToSpawn;
+        else
+        {
+            obj = enemyPool.Pop();
+        }
+        Transform objTrans = obj.transform;
+
+        obj.SetActive(true);
+        objTrans.position = position;
+        objTrans.rotation = rotation;
+
+        IPoolCharacter poolCharacter = CacheIPoolCharacter.Get(obj);
+        poolCharacter?.OnSpawn();
+
+        return obj;
     }
 
-    public void DespawnEnemyToPool(EnemyType tag, GameObject prefab)
+    public void DespawnEnemyToPool(GameObject obj)
     {
-        prefab.SetActive(false);
-        poolDictionary[tag].Enqueue(prefab);
+        if (!enemyPool.Contains(obj))
+        {
+            IPoolCharacter poolCharacter = CacheIPoolCharacter.Get(obj);
+            poolCharacter?.OnDespawn();
+            obj.SetActive(false);
+            enemyPool.Push(obj);
+        }
     }
 
 }

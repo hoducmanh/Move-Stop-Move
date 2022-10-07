@@ -28,8 +28,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7048810766574840130}
-  m_LocalRotation: {x: 0.00000008146034, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 3.83, z: -9.76}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 39, y: 39, z: 39}
   m_Children: []
   m_Father: {fileID: 0}
@@ -98,14 +98,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 498e8c46c2552d141976f3583291a507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  flyingSpeed: 10
+  flyingSpeed: 5
   rotatingSpeed: 10
   weaponExistTime: 0.5
+  weaponPositionOffset: {x: 0, y: 0, z: 0}
+  handRotationOffset: {x: 90, y: -90, z: 180}
+  throwRotationOffset: {x: -90, y: 0, z: 90}
+  weaponRenderer: {fileID: 0}
+  weaponTag: 0
   weaponTrans: {fileID: 7048810766574810466}
   weaponObj: {fileID: 7048810766574840130}
   weaponType: 0
+  weaponCol: {fileID: 0}
   RotOffset: {x: -90, y: 0, z: 90}
-  col: {fileID: 6544301573685812965}
+  weaponScale: 39
 --- !u!65 &6544301573685812965
 BoxCollider:
   m_ObjectHideFlags: 0

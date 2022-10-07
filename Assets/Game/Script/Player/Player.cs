@@ -14,18 +14,28 @@ public class Player : Character
     private bool isAttacking;
     private float timer = 0;
     private bool isTheFirstTimeAttack = true;
-
+    private Quaternion curRotation;
+    public bool isPlaying;
+    private void Start()
+    {
+        joystick.enabled = false;
+    }
     void FixedUpdate()
     {
-        HandleWithInput();
-        ScanningEnemy();
-        TargetingEnemy();
-        Counter();
+        Debug.Log(joystick.enabled);
+        if (isPlaying) {
+            joystick.enabled = true;
+            HandleWithInput();
+            ScanningEnemy();
+            TargetingEnemy();
+            Counter();
+        }
+        Debug.Log(targetPosition.Count);
     }
 
     private void Move()
     {
-        PlayerTrans.position = Vector3.MoveTowards(PlayerTrans.position, PlayerTrans.position + v_movement, Time.deltaTime * speed);
+        playerTrans.position = Vector3.MoveTowards(playerTrans.position, playerTrans.position + v_movement, Time.deltaTime * speed);
         Vector3 lookDir = new Vector3(v_movement.x, 0, v_movement.z);
         meshPlayer.rotation = Quaternion.LookRotation(lookDir);
     }
@@ -65,8 +75,10 @@ public class Player : Character
                 {
                     isAttacking = true;
                     ChangeAnimation(Value.CURRENT_ANIM_ATTACK);
-                    currTarget = (targetPosition[0].PlayerTrans.position - meshPlayer.localPosition);
-                    meshPlayer.LookAt(currTarget);
+                    currTarget = (targetPosition[0].playerTrans.position - meshPlayer.localPosition);
+                    currTarget.y = 1.5f;
+                    meshPlayer.LookAt(targetPosition[0].playerTrans.position, Vector3.up);
+                    curRotation = Quaternion.LookRotation(currTarget);
                     Throwing(currTarget);
                     isTheFirstTimeAttack = false;
                     timer = 0;
